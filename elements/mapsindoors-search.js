@@ -13,6 +13,43 @@ export default class extends HTMLElement {
                 width: 100%;
                 max-height: 100vh;
                 overflow-y: auto;
+                text-align: left;
+            }
+            form {
+                padding: 1rem;
+            }
+
+            /* TODO: This should be moved out of custom element */
+            label, input[type="search"] {
+                display: block;
+                width: 100%;
+            }
+
+            input[type="search"] {
+                -webkit-appearance: none;
+                appearance: none;
+                padding: .25rem;
+                font-size: 18px;
+            }
+
+            .mapsindoors-search-result {
+                padding: .25rem;
+                border-bottom: 1px solid #ccc;
+                cursor: pointer;
+            }
+
+            .mapsindoors-search-result:hover {
+                background-color: rgba(0, 0, 0, .1);
+            }
+
+            .mapsindoors-search-result h2 {
+                font-size: 16px;
+                margin: 0;
+            }
+
+            .mapsindoors-search-result p {
+                margin: 0;
+                font-size: 12px;
             }
         </style>
         <div class="mapsindoors-search">
@@ -67,6 +104,9 @@ export default class extends HTMLElement {
         return `
             <div class="mapsindoors-search-result" data-id="${result.id}">
                 <h2>${result.properties.name}</h2>
+                <p>
+                    ${result.properties.venue}
+                </p>
             </div>
         `;
     }
