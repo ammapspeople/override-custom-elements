@@ -11,7 +11,7 @@ export default class extends HTMLElement {
             }
             .mapsindoors-search {
                 width: 100%;
-                height: 100%;
+                max-height: 100vh;
                 overflow-y: auto;
             }
         </style>
