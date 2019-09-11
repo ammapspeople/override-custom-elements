@@ -103,6 +103,14 @@ export default class extends HTMLElement {
             this.infoWindow.open(this.googleMap);
             this.googleMap.panTo(latLng);
         });
+
+        window.addEventListener('mapsindoorsfilter', event => {
+            if (event.detail) {
+                this.mapsIndoors.filter(event.detail, true);
+            } else {
+                this.mapsIndoors.filter();
+            }
+        });
     }
 
     emitEvent(name, detail) {
