@@ -4,7 +4,7 @@
   "description": "Override: See if an Mapsindoors map can be encapsulated in a custom element.",
   "main": "mapsindoors.custom-element.js",
   "scripts": {
-    "start": "http-server",
+    "start": "http-server -p 4200",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
