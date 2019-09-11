@@ -52,6 +52,7 @@ export default class extends HTMLElement {
         this.createMap();
         this.createFloorSelector();
         this.mapElement.classList.add('active');
+        this.setupListeners();
     }
 
     /* ------------------------------------------------------------------------- */
@@ -74,7 +75,6 @@ export default class extends HTMLElement {
         // TODO: This does not work for some reason (probably the mutationobserver's "if (document.contains(element))...")
         const div = document.createElement('div');
         let floorSelector = new mapsindoors.FloorSelector(div, this.mapsIndoors);
-        console.log(floorSelector);
         this.googleMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(div);
     }
 
@@ -87,4 +87,14 @@ export default class extends HTMLElement {
             scriptTag.onload = () => resolve();
         });
     }
+
+    setupListeners() {
+        google.maps.event.addListener(this.mapsIndoors, 'click', event => {
+            this.emitEvent('mapsindoorsclick', event);
+        });
+    }
+
+    emitEvent(name, detail) {
+		this.dispatchEvent(new CustomEvent(name, { detail, bubbles: true }));
+	}
 };
