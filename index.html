@@ -4,33 +4,16 @@
     <meta charset="utf-8"/>
     <title>Mapsindoors Custom Element | Override</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <style>
-        body.unsupported-browser::before {
-            font-size: 2em;
-            color: hotpink;
-            content: 'This will not work in your browser.';
-        }
-    </style>
     <script type="module">
         import MapsindoorsMap from './mapsindoors.custom-element.js';
-        (() => {
-            if (!('customElements' in window)) {
-                document.addEventListener('DOMContentLoaded', () => {
-                    document.body.classList.add('unsupported-browser');
-                });
-                return;
-            }
-
-            window.customElements.define('mapsindoors-map', MapsindoorsMap);
-        })();
+        window.customElements.define('mapsindoors-map', MapsindoorsMap);
     </script>
 </head>
 
 <body>
-    <p>
+    <main>
         <mapsindoors-map google-api-key="AIzaSyD8lfGCYzBMiIaGZM2JqHkSDfQbGZ-2zOM" solution-id="asdfg"></mapsindoors-map>
-    </p>
+    </main>
 </body>
 
 </html>
