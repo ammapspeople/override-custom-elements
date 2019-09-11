@@ -4,7 +4,20 @@ export default class extends HTMLElement {
 
         const template = document.createElement('template');
 
-        template.innerHTML = '<div><p>Loading...</p></div>';
+        template.innerHTML = `
+        <style>
+            :host {
+                display: inline-block;
+            }
+            .loading {
+                text-align: center;
+                color: #999;
+            }
+        </style>
+        <div>
+            <p class="loading js-loading">&hellip;</p>
+        </div>
+        `;
 
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
