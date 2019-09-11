@@ -96,12 +96,7 @@ export default class extends HTMLElement {
     setupListeners() {
         google.maps.event.addListener(this.mapsIndoors, 'click', location => {
             this.emitEvent('mapsindoorsclick', location);
-
-            const latLng = this.getLatLng(location);
-            this.infoWindow.setContent(location.properties.name);
-            this.infoWindow.setPosition(latLng);
-            this.infoWindow.open(this.googleMap);
-            this.googleMap.panTo(latLng);
+            this.selectLocation(location);
         });
 
         window.addEventListener('mapsindoorsfilter', event => {
@@ -111,6 +106,18 @@ export default class extends HTMLElement {
                 this.mapsIndoors.filter();
             }
         });
+
+        window.addEventListener('mapsindoorsselectlocation', event => {
+            this.selectLocation(event.detail);
+        })
+    }
+
+    selectLocation(location) {
+        const latLng = this.getLatLng(location);
+        this.infoWindow.setContent(location.properties.name);
+        this.infoWindow.setPosition(latLng);
+        this.infoWindow.open(this.googleMap);
+        this.googleMap.panTo(latLng);
     }
 
     emitEvent(name, detail) {
