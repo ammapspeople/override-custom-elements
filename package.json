@@ -1,0 +1,15 @@
+{
+  "name": "mapsindoors-custom-element-override",
+  "version": "1.0.0",
+  "description": "Override: See if an Mapsindoors map can be encapsulated in a custom element.",
+  "main": "mapsindoors.custom-element.js",
+  "scripts": {
+    "start": "http-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
+}
