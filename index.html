@@ -4,20 +4,20 @@
     <meta charset="utf-8"/>
     <title>Mapsindoors Custom Element | Override</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+
     <script type="module">
         import MapsindoorsMap from './mapsindoors.custom-element.js';
         window.customElements.define('mapsindoors-map', MapsindoorsMap);
     </script>
+
     <style>
-        body {
-            padding: 0;
-            margin: 0;
-        }
         mapsindoors-map {
-            width: 90vw;
+            width: 50vw;
             height: 50vh;
         }
     </style>
+
 </head>
 
 <body>
