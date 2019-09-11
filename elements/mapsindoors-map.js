@@ -69,11 +69,11 @@ export default class extends HTMLElement {
             }
         );
         this.mapsIndoors = new mapsindoors.MapsIndoors({ map: this.googleMap });
+        this.infoWindow = new google.maps.InfoWindow();
 
         if (!this.lat || !this.lng || !this.zoom) {
             this.mapsIndoors.fitVenue();
         }
-
     }
 
     createFloorSelector() {
@@ -94,12 +94,29 @@ export default class extends HTMLElement {
     }
 
     setupListeners() {
-        google.maps.event.addListener(this.mapsIndoors, 'click', event => {
-            this.emitEvent('mapsindoorsclick', event);
+        google.maps.event.addListener(this.mapsIndoors, 'click', location => {
+            this.emitEvent('mapsindoorsclick', location);
+
+            const latLng = this.getLatLng(location);
+            this.infoWindow.setContent(location.properties.name);
+            this.infoWindow.setPosition(latLng);
+            this.infoWindow.open(this.googleMap);
+            this.googleMap.panTo(latLng);
         });
     }
 
     emitEvent(name, detail) {
 		this.dispatchEvent(new CustomEvent(name, { detail, bubbles: true }));
-	}
+    }
+
+    getLatLng(location) {
+        let coords;
+        if (location.geometry.type === 'Point') {
+            coords = location.geometry.coordinates;
+        } else {
+            coords = location.properties.anchor.coordinates;
+        }
+
+        return { lat: coords[1], lng: coords[0] };
+    }
 };
