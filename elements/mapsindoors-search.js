@@ -37,6 +37,7 @@ export default class extends HTMLElement {
         // await this.injectScript(`https://app.mapsindoors.com/mapsindoors/js/sdk/mapsindoors-3.4.0.js.gz?apikey=${this.mapsIndoorsSolutionId}`);
 
         this.searchInputField.addEventListener('input', () => this.search());
+        this.searchResultsElement.addEventListener('click', e => this.searchResultClicked(e));
     }
 
     /* ------------------------------------------------------------------------- */
@@ -45,6 +46,8 @@ export default class extends HTMLElement {
         const query = this.searchInputField.value;
         if (query.length >= 2) {
             mapsindoors.LocationsService.getLocations({ q: query }).then(locations => {
+                this.locations = locations;
+
                 this.searchResultsElement.innerHTML = '';
                 for (const location of locations) {
                     this.searchResultsElement.insertAdjacentHTML('beforeend', this.createResultHtml(location));
@@ -52,9 +55,6 @@ export default class extends HTMLElement {
 
                 // Filter locations on map
                 let filter = locations.map(location => location.id );
-
-                /* The filter is applied to the map, and the "fitView" is set to true, so that the map will change the viewport to fit the result. */
-                // mi.filter(filter, true);
                 this.emitEvent('mapsindoorsfilter', filter);
             });
         } else {
@@ -65,10 +65,16 @@ export default class extends HTMLElement {
 
     createResultHtml(result) {
         return `
-            <div data-id="${result.id}">
+            <div class="mapsindoors-search-result" data-id="${result.id}">
                 <h2>${result.properties.name}</h2>
             </div>
         `;
+    }
+
+    searchResultClicked(e) {
+        const searchResult = e.target.closest('.mapsindoors-search-result');
+        const location = this.locations.find(loc => loc.id === searchResult.dataset.id);
+        this.emitEvent('mapsindoorsselectlocation', location);
     }
 
     injectScript(url) {
