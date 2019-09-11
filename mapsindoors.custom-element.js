@@ -9,29 +9,66 @@ export default class extends HTMLElement {
             :host {
                 display: inline-block;
             }
+            .mapsindoors-map {
+                width: 100%;
+                height: 100%;
+            }
             .loading {
                 text-align: center;
                 color: #999;
             }
+            .map {
+                display: none;
+            }
+            .map.active {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
         </style>
-        <div>
+        <div class="mapsindoors-map">
             <p class="loading js-loading">&hellip;</p>
+            <div class="map js-map"></div>
         </div>
         `;
 
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
+        // Attributes
         this.googleApiKey = this.getAttribute('google-api-key');
         this.mapsIndoorsSolutionId = this.getAttribute('solution-id');
+        this.lat = this.getAttribute('lat');
+        this.lng = this.getAttribute('lng');
+        this.zoom = this.getAttribute('zoom');
+
+        this.mapElement = this.shadowRoot.querySelector('.js-map');
     }
 
     async connectedCallback() {
         await this.injectScript(`//maps.googleapis.com/maps/api/js?v=3&key=${this.googleApiKey}&libraries=geometry,places`);
         await this.injectScript(`https://app.mapsindoors.com/mapsindoors/js/sdk/mapsindoors-3.4.0.js.gz?apikey=${this.mapsIndoorsSolutionId}`);
+
+        this.shadowRoot.querySelector('.js-loading').remove();
+        this.createMap();
+        this.mapElement.classList.add('active');
     }
 
     /* ------------------------------------------------------------------------- */
+
+    createMap() {
+        let myGoogleMap = new google.maps.Map(
+            this.mapElement,
+            {
+                center: {
+                    lat: parseFloat(this.lat),
+                    lng: parseFloat(this.lng)
+                },
+                zoom: parseFloat(this.zoom)
+            }
+        );
+        new mapsindoors.MapsIndoors({ map: myGoogleMap });
+    }
 
     injectScript(url) {
         return new Promise(resolve => {
