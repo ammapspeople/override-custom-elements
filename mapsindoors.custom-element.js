@@ -48,16 +48,16 @@ export default class extends HTMLElement {
     async connectedCallback() {
         await this.injectScript(`//maps.googleapis.com/maps/api/js?v=3&key=${this.googleApiKey}&libraries=geometry,places`);
         await this.injectScript(`https://app.mapsindoors.com/mapsindoors/js/sdk/mapsindoors-3.4.0.js.gz?apikey=${this.mapsIndoorsSolutionId}`);
-
         this.shadowRoot.querySelector('.js-loading').remove();
         this.createMap();
+        this.createFloorSelector();
         this.mapElement.classList.add('active');
     }
 
     /* ------------------------------------------------------------------------- */
 
     createMap() {
-        let myGoogleMap = new google.maps.Map(
+        this.googleMap = new google.maps.Map(
             this.mapElement,
             {
                 center: {
@@ -67,7 +67,15 @@ export default class extends HTMLElement {
                 zoom: parseFloat(this.zoom)
             }
         );
-        new mapsindoors.MapsIndoors({ map: myGoogleMap });
+        this.mapsIndoors = new mapsindoors.MapsIndoors({ map: this.googleMap });
+    }
+
+    createFloorSelector() {
+        // TODO: This does not work for some reason (probably the mutationobserver's "if (document.contains(element))...")
+        const div = document.createElement('div');
+        let floorSelector = new mapsindoors.FloorSelector(div, this.mapsIndoors);
+        console.log(floorSelector);
+        this.googleMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(div);
     }
 
     injectScript(url) {
