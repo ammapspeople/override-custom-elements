@@ -62,13 +62,18 @@ export default class extends HTMLElement {
             this.mapElement,
             {
                 center: {
-                    lat: parseFloat(this.lat),
-                    lng: parseFloat(this.lng)
+                    lat: parseFloat(this.lat || 0),
+                    lng: parseFloat(this.lng || 0)
                 },
-                zoom: parseFloat(this.zoom)
+                zoom: parseFloat(this.zoom || 0)
             }
         );
         this.mapsIndoors = new mapsindoors.MapsIndoors({ map: this.googleMap });
+
+        if (!this.lat || !this.lng || !this.zoom) {
+            this.mapsIndoors.fitVenue();
+        }
+
     }
 
     createFloorSelector() {
