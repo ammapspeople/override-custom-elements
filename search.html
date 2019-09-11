@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Search | Mapsindoors Custom Element | Override</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+
+    <script type="module">
+        import MapsindoorsMap from './elements/mapsindoors-map.js';
+        import MapsindoorsSearch from './elements/mapsindoors-search.js';
+
+        window.customElements.define('mapsindoors-map', MapsindoorsMap);
+        window.customElements.define('mapsindoors-search', MapsindoorsSearch);
+    </script>
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+        main {
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+        }
+        mapsindoors-map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+</head>
+
+<body>
+    <main>
+        <mapsindoors-search></mapsindoors-search>
+        <mapsindoors-map google-api-key="AIzaSyD8lfGCYzBMiIaGZM2JqHkSDfQbGZ-2zOM" solution-id="demo"></mapsindoors-map>
+    </main>
+</body>
+
+</html>
