@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Route | Mapsindoors Custom Element | Override</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+
+    <script type="module">
+        import MapsindoorsMap from './elements/mapsindoors-map.js';
+        import MapsindoorsDirections from './elements/mapsindoors-directions.js';
+        window.customElements.define('mapsindoors-map', MapsindoorsMap);
+        window.customElements.define('mapsindoors-directions', MapsindoorsDirections);
+    </script>
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+        main {
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 100px;
+        }
+
+        mapsindoors-map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <mapsindoors-map google-api-key="AIzaSyD8lfGCYzBMiIaGZM2JqHkSDfQbGZ-2zOM" solution-id="demo" lat="57.0578552" lng="9.9508377" zoom="19"></mapsindoors-map>
+        <mapsindoors-directions></mapsindoors-directions>
+    </main>
+</body>
+
+</html>
+
+<!-- center: { lat: 57.0588552, lng: 9.9468377 }, -->

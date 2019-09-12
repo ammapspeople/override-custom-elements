@@ -43,6 +43,7 @@ export default class extends HTMLElement {
         this.zoom = this.getAttribute('zoom');
 
         this.mapElement = this.shadowRoot.querySelector('.js-map');
+
     }
 
     async connectedCallback() {
@@ -53,6 +54,7 @@ export default class extends HTMLElement {
         this.createFloorSelector();
         this.mapElement.classList.add('active');
         this.setupListeners();
+        this.directionsRenderer = new mapsindoors.DirectionsRenderer({ mapsindoors: this.mapsIndoors });
     }
 
     /* ------------------------------------------------------------------------- */
@@ -110,6 +112,10 @@ export default class extends HTMLElement {
         window.addEventListener('mapsindoorsselectlocation', event => {
             this.selectLocation(event.detail);
         })
+
+        window.addEventListener('mapsindoorssetroute', event => {
+            this.drawRoute(event.detail);
+        })
     }
 
     selectLocation(location) {
@@ -118,6 +124,21 @@ export default class extends HTMLElement {
         this.infoWindow.setPosition(latLng);
         this.infoWindow.open(this.googleMap);
         this.googleMap.panTo(latLng);
+        this.emitEvent('mapsindoorslocationselected', location);
+    }
+
+    drawRoute(route) {
+        let args = {
+            origin: route.origin,
+            destination: {
+                lat: route.destination.geometry.coordinates[1],
+                lng: route.destination.geometry.coordinates[0],
+                floor: route.destination.properties.floor
+            }
+        };
+        mapsindoors.DirectionsService.getRoute(args).then(res => {
+            this.directionsRenderer.setRoute(res.routes[0]);
+        });
     }
 
     emitEvent(name, detail) {
