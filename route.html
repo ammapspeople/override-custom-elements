@@ -8,8 +8,10 @@
 
     <script type="module">
         import MapsindoorsMap from './elements/mapsindoors-map.js';
+        import MapsindoorsFloorSelector from './elements/mapsindoors-floor-selector.js';
         import MapsindoorsDirections from './elements/mapsindoors-directions.js';
         window.customElements.define('mapsindoors-map', MapsindoorsMap);
+        window.customElements.define('mapsindoors-floor-selector', MapsindoorsFloorSelector);
         window.customElements.define('mapsindoors-directions', MapsindoorsDirections);
     </script>
 
@@ -33,7 +35,9 @@
 
 <body>
     <main>
-        <mapsindoors-map google-api-key="AIzaSyD8lfGCYzBMiIaGZM2JqHkSDfQbGZ-2zOM" solution-id="demo" lat="57.0578552" lng="9.9508377" zoom="19"></mapsindoors-map>
+        <mapsindoors-map google-api-key="AIzaSyD8lfGCYzBMiIaGZM2JqHkSDfQbGZ-2zOM" solution-id="demo" lat="57.0578552" lng="9.9508377" zoom="19">
+            <mapsindoors-floor-selector></mapsindoors-floor-selector>
+        </mapsindoors-map>
         <mapsindoors-directions></mapsindoors-directions>
     </main>
 </body>
