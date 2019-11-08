@@ -111,12 +111,17 @@ export default class extends HTMLElement {
 
         window.addEventListener('mapsindoorsselectlocation', event => {
             this.selectLocation(event.detail);
-        })
+        });
 
         window.addEventListener('mapsindoorssetroute', event => {
             this.drawRoute(event.detail);
+        });
+
+        window.addEventListener('mapsindoorssetrouteleg', event => {
+            this.directionsRenderer.setLegIndex(event.detail);
         })
     }
+
 
     selectLocation(location) {
         const latLng = this.getLatLng(location);
@@ -138,6 +143,7 @@ export default class extends HTMLElement {
         };
         mapsindoors.DirectionsService.getRoute(args).then(res => {
             this.directionsRenderer.setRoute(res.routes[0]);
+            this.emitEvent('mapsindoorsrouteset', res.routes[0]);
         });
     }
 
