@@ -9,11 +9,42 @@ export default class extends HTMLElement {
             :host {
                 display: inline-block;
             }
+
+            .mapsindoors-directions-legs-overview {
+                display: flex;
+                justify-content: space-around;
+            }
+
+            .mapsindoors-directions-leg {
+                flex: 1;
+                background-color: #eee;
+                margin: .5rem;
+                padding: .5rem;
+                display: flex;
+                border-radius: 1rem;
+                cursor: pointer;
+            }
+
+            .mapsindoors-directions-leg.active {
+                box-shadow: 0 0 0 3px green;
+            }
+
+            .mapsindoors-directions-leg-index {
+                color: #aaa;
+                padding-right: 1rem;
+            }
+
+            .mapsindoors-directions-leg-description {
+                flex: 1;
+                text-align: left;
+            }
         </style>
-        <div class="mapsindoors-directions"></div>
+        <div class="mapsindoors-directions-legs-overview" id="mapsindoors-directions-legs-overview"></div>
         `;
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
+
+        this.legsOverviewElement = this.shadowRoot.querySelector('#mapsindoors-directions-legs-overview');
     }
 
     async connectedCallback() {
@@ -24,12 +55,43 @@ export default class extends HTMLElement {
         window.addEventListener('mapsindoorslocationselected', e => {
             this.prepareDirections(e.detail);
         });
+
+        window.addEventListener('mapsindoorsrouteset', e => {
+            this.legsOverviewElement.innerHTML = '';
+            this.renderLegsOverview(e.detail);
+        });
     }
 
     /* ------------------------------------------------------------------------- */
 
     prepareDirections(location) {
         this.emitEvent('mapsindoorssetroute', { origin: { lat: 57.0580564211464, lng: 9.94982129858636, floor: 0 }, destination: location });
+    }
+
+    renderLegsOverview(route) {
+        route.legs.forEach((leg, legIndex) => {
+            const legElement = document.createElement('div');
+            legElement.classList.add('mapsindoors-directions-leg');
+            if (legIndex === 0) {
+                legElement.classList.add('active');
+            }
+            legElement.innerHTML = `
+                <span class="mapsindoors-directions-leg-index">${legIndex + 1}</span>
+                <span class="mapsindoors-directions-leg-description">
+                    ${leg.distance.text}<br>
+                    <small>${leg.duration.text}</small>
+                </span>
+            `;
+            legElement.addEventListener('click', () => {
+                const siblings = legElement.parentNode.querySelectorAll('.mapsindoors-directions-leg');
+                [].slice.call(siblings).forEach(sibling => {
+                    sibling.classList.remove('active');
+                });
+                this.emitEvent('mapsindoorssetrouteleg', legIndex);
+                legElement.classList.add('active');
+            })
+            this.legsOverviewElement.insertAdjacentElement('beforeend', legElement);
+        });
     }
 
     injectScript(url) {
