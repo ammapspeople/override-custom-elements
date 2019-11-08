@@ -25,16 +25,28 @@ The above three lines is a little lacking in feautures. So more custom elements 
 
 The mother element of all MapsIndoors custom elements. It builds on top of the [MapsIndoors SDK for Web](https://mapsindoors.github.io/web/v3/), setting up all necessary dependencies and boilerplate code.
 
+- [Element source](elements/mapsindoors-map.js)
+- [Usage example](examples/minimal.html)
+
 ### `mapsindoors-floor-selector`
 
 Adds a floor selector to the map.
 
+- [Element source](elements/mapsindoors-floor-selector.js)
+- [Usage example](examples/minimal-with-floors.html)
+
 ### `mapsindoors-search`
 
 Input field where you can search for locations, and the results are shown both in a list and on the map.
+
+- [Element source](elements/mapsindoors-search.js)
+- [Usage example](examples/search.html)
 
 ### `mapsindoors-directions`
 
 When used, clicking on a location on the map will draw route lines on the map and present route leg switching in the element itself.
 
 For now, the origin location is fixed :)
+
+- [Element source](elements/mapsindoors-directiond.js)
+- [Usage example](examples/route.html)
