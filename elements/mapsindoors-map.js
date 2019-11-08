@@ -51,7 +51,6 @@ export default class extends HTMLElement {
         await this.injectScript(`https://app.mapsindoors.com/mapsindoors/js/sdk/mapsindoors-3.4.0.js.gz?apikey=${this.mapsIndoorsSolutionId}`);
         this.shadowRoot.querySelector('.js-loading').remove();
         this.createMap();
-        this.createFloorSelector();
         this.mapElement.classList.add('active');
         this.setupListeners();
         this.directionsRenderer = new mapsindoors.DirectionsRenderer({ mapsindoors: this.mapsIndoors });
@@ -76,13 +75,6 @@ export default class extends HTMLElement {
         if (!this.lat || !this.lng || !this.zoom) {
             this.mapsIndoors.fitVenue();
         }
-    }
-
-    createFloorSelector() {
-        // TODO: This does not work for some reason (probably the mutationobserver's "if (document.contains(element))...")
-        const div = document.createElement('div');
-        let floorSelector = new mapsindoors.FloorSelector(div, this.mapsIndoors);
-        this.googleMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(div);
     }
 
     injectScript(url) {
