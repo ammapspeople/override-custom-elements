@@ -93,6 +93,14 @@ export default class extends HTMLElement {
             this.selectLocation(location);
         });
 
+        google.maps.event.addListener(this.mapsIndoors, 'building_changed', () => {
+            this.emitEvent('mapsindoorsbuildingchanged', { building: this.mapsIndoors.getBuilding(), floor: this.mapsIndoors.getFloor().toString() });
+        });
+
+        google.maps.event.addListener(this.mapsIndoors, 'floor_changed', () => {
+            this.emitEvent('mapsindoorsfloorchanged', this.mapsIndoors.getFloor().toString());
+        });
+
         window.addEventListener('mapsindoorsfilter', event => {
             if (event.detail) {
                 this.mapsIndoors.filter(event.detail, true);
@@ -111,7 +119,19 @@ export default class extends HTMLElement {
 
         window.addEventListener('mapsindoorssetrouteleg', event => {
             this.directionsRenderer.setLegIndex(event.detail);
-        })
+        });
+
+        window.addEventListener('mapsindoorssetfloor', event => {
+            this.mapsIndoors.setFloor(event.detail);
+        });
+
+        window.addEventListener('mapsindoorsaddcontrol', event => {
+            this.googleMap.controls[google.maps.ControlPosition.RIGHT_TOP].push(event.detail);
+        });
+
+        window.addEventListener('mapsindoorssetstyle', event => {
+            this.shadowRoot.appendChild(event.detail);
+        });
     }
 
 
