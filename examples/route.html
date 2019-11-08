@@ -13,6 +13,17 @@
         window.customElements.define('mapsindoors-map', MapsindoorsMap);
         window.customElements.define('mapsindoors-floor-selector', MapsindoorsFloorSelector);
         window.customElements.define('mapsindoors-directions', MapsindoorsDirections);
+
+        // Set origin locations for fun
+        document.getElementById('origin1').addEventListener('click', () => setOrigin(57.0580564211464, 9.94982129858636, 0));
+        document.getElementById('origin2').addEventListener('click', () => setOrigin(57.058011929915374, 9.950424134731293,1));
+        document.getElementById('origin3').addEventListener('click', () => setOrigin(57.058368, 9.9509848, 0));
+
+        function setOrigin(lat, lng, floor) {
+            document.querySelector('mapsindoors-directions').setAttribute('from-lat', lat);
+            document.querySelector('mapsindoors-directions').setAttribute('from-lng', lng);
+            document.querySelector('mapsindoors-directions').setAttribute('from-floor', floor);
+        }
     </script>
 
     <style>
@@ -23,7 +34,7 @@
             height: 100%;
             display: grid;
             grid-template-columns: 1fr;
-            grid-template-rows: 1fr 100px;
+            grid-template-rows: 1fr 100px 100px;
         }
 
         mapsindoors-map {
@@ -39,6 +50,12 @@
             <mapsindoors-floor-selector></mapsindoors-floor-selector>
         </mapsindoors-map>
         <mapsindoors-directions from-lat="57.0580564211464" from-lng="9.94982129858636" from-floor="0"></mapsindoors-directions>
+        <div>
+            Update origin location attributes on the mapsinfoors-directions element:
+            <button id="origin1" class="setoriginbtn">1</button>
+            <button id="origin2" class="setoriginbtn">2</button>
+            <button id="origin3" class="setoriginbtn">3</button>
+        </div>
     </main>
 </body>
 

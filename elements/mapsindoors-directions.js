@@ -52,6 +52,24 @@ export default class extends HTMLElement {
         this.legsOverviewElement = this.shadowRoot.querySelector('#mapsindoors-directions-legs-overview');
     }
 
+    static get observedAttributes() {
+        return ['from-lat', 'from-lng', 'from-floor'];
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+        switch (name) {
+            case 'from-lat':
+                this.fromLat = newValue;
+                break;
+            case 'from-lng':
+                this.fromLng = newValue;
+                break;
+            case 'from-floor':
+                this.fromFloor = newValue;
+                break;
+        }
+    }
+
     async connectedCallback() {
         // TODO: injectScript should see if the script is already loaded
         // await this.injectScript(`//maps.googleapis.com/maps/api/js?v=3&key=${this.googleApiKey}&libraries=geometry,places`);
