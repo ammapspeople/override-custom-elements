@@ -46,7 +46,5 @@ Input field where you can search for locations, and the results are shown both i
 
 When used, clicking on a location on the map will draw route lines on the map and present route leg switching in the element itself.
 
-For now, the origin location is fixed :)
-
 - [Element source](elements/mapsindoors-directiond.js)
 - [Usage example](examples/route.html)

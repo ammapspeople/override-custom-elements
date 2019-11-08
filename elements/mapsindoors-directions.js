@@ -44,6 +44,11 @@ export default class extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
+        // Attributes
+        this.fromLat = this.getAttribute('from-lat');
+        this.fromLng = this.getAttribute('from-lng');
+        this.fromFloor = this.getAttribute('from-floor');
+
         this.legsOverviewElement = this.shadowRoot.querySelector('#mapsindoors-directions-legs-overview');
     }
 
@@ -65,7 +70,7 @@ export default class extends HTMLElement {
     /* ------------------------------------------------------------------------- */
 
     prepareDirections(location) {
-        this.emitEvent('mapsindoorssetroute', { origin: { lat: 57.0580564211464, lng: 9.94982129858636, floor: 0 }, destination: location });
+        this.emitEvent('mapsindoorssetroute', { origin: { lat: this.fromLat, lng: this.fromLng, floor: this.fromFloor }, destination: location });
     }
 
     renderLegsOverview(route) {
